@@ -1,0 +1,161 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid" style="max-width: initial;">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div id="chart-container" style="width: 100%; height: 400px;">
+          <div id="chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to update chart dimensions
+    function updateChartDimensions() {
+      var chartContainer = document.getElementById('chart-container');
+      chartContainer.style.height = '400px'; // Fixed height
+      chartContainer.style.width = '100%'; // Full width
+    }
+
+    // Function to find min and max values from data
+    function findMinMax(data) {
+      let min = Infinity;
+      let max = -Infinity;
+
+      data.forEach(point => {
+        point.y.forEach(value => {
+          if (value < min) min = value;
+          if (value > max) max = value;
+        });
+      });
+
+      return { min, max };
+    }
+
+    // Function to fetch data via AJAX
+    function fetchData() {
+      $.ajax({
+        url: '{% url "daily_candle_overview" %}',
+        method: 'GET',
+        success: function(response) {
+          // Assuming response is in the same format as your 'data' variable
+          // You may need to format the response based on your requirements
+          var data = response; // Update this based on your actual response structure
+         
+
+          var minMax = findMinMax(data);
+
+          // Update series data and y-axis in ApexCharts
+          chart.updateOptions({
+            series: [{
+              data: data
+            }],
+            yaxis: {
+              min: minMax.min,
+              max: minMax.max
+            }
+          });
+        },
+        error: function(xhr, status, error) {
+          console.error(error); // Log any errors
+        }
+      });
+    }
+
+    // ApexCharts configuration
+    var options = {
+      chart: {
+        type: 'candlestick',
+        height: 1000,
+        animations: {
+          enabled: true // Enable animations for better performance
+        },
+      },
+      series: [{
+        data: [] // Initially empty, data will be updated via AJAX
+      }],
+      xaxis: {
+        type: 'datetime',
+        grid: {
+          show: true // Show vertical grid lines
+        }
+      },
+      yaxis: {
+        tooltip: {
+          enabled: true
+        },
+        grid: {
+          show: true // Show horizontal grid lines
+        }
+      },
+      annotations: {
+        points: [{
+          x: new Date().getTime(),
+          y: 100,
+          marker: {
+            size: 8,
+            fillColor: '#fff',
+            strokeColor: 'red',
+            strokeWidth: 2,
+            shape: 'circle',
+            radius: 5
+          },
+          label: {
+            borderColor: '#FF4560',
+            offsetY: 0,
+            style: {
+              color: '#fff',
+              background: '#FF4560'
+            },
+            text: 'Point Annotation'
+          }
+        }],
+        lines: [{
+          x1: new Date().getTime(),
+          x2: new Date().getTime() + 86400000,
+          y1: 100,
+          y2: 150,
+          strokeDashArray: 5,
+          borderColor: '#775DD0',
+          borderWidth: 2,
+          label: {
+            borderColor: '#775DD0',
+            style: {
+              color: '#fff',
+              background: '#775DD0'
+            },
+            text: 'Line Annotation'
+          }
+        }]
+      }
+    };
+
+    // Render the chart
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+
+    // Update chart dimensions on window resize
+    window.addEventListener('resize', function() {
+      updateChartDimensions();
+      chart.updateOptions({
+        chart: {
+          width: document.getElementById('chart-container').style.width,
+          height: document.getElementById('chart-container').style.height
+        }
+      });
+    });
+
+    // Initial call to update chart dimensions
+    updateChartDimensions();
+
+    // Fetch data on page load
+    fetchData();
+  });
+</script>
+{% endblock %}

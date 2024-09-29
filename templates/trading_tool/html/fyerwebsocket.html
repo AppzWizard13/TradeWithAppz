@@ -1,0 +1,45 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<!--  Header End -->
+<div class="container-fluid">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Websocket Test</h5>
+        <div class="card">
+          <div class="card-body">
+            <div id="data-container">
+                <h1 id="app">{{text}}</h1> <!-- Removed the extra '55' -->
+                <!-- Data from WebSocket will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    // Function to update the data container with the received message
+    function updateData(message) {
+        var dataContainer = document.getElementById("data-container");
+        var messageElement = document.querySelector('#app'); // Selecting the existing h1 element
+        messageElement.textContent = message; // Replacing the content with the new message
+    }
+
+    // WebSocket connection using secure WebSocket (wss://) protocol
+    var socket = new WebSocket("wss://c67b-2405-201-f007-402c-2ce9-bdd7-aca1-9e02.ngrok-free.app/ws/fyersindexdata/");
+
+    // Event handler for receiving messages from the WebSocket server
+    socket.onmessage = function(event) {
+        console.log("Received message:", event.data);
+        var message = event.data;
+        updateData(message);
+    };
+
+    // Explicitly close the connection when navigating away
+    window.addEventListener('beforeunload', function() {
+        socket.close();
+    });
+</script>
+{% endblock %}

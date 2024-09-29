@@ -1,0 +1,55 @@
+{% extends  'landing/landing_page.html' %} 
+{% load static %}
+{% block content %}
+
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <h1 class="display-3 mb-4 animated slideInDown">Register</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Register</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Callback Start -->
+    <div class="container-fluid callback my-5 pt-5">
+        <div class="container pt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="bg-white border rounded p-4 p-sm-5 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                            <p class="d-inline-block border rounded text-primary fw-semi-bold py-1 px-3"> Create your account for free</p>
+                            <h1 class="display-5 mb-5">REGISTER</h1>
+                        </div>
+                        {% if form %}
+                        <form method='POST' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form }}
+                                     
+                        <div class="my-5 d-flex justify-content-center">
+                          <button class="btn btn-primary d-grid w-50" type="submit">Create Account</button>
+                        </div> 
+                        </form>
+                        <a href="{% url 'login' %}"><p class="d-inline-block  rounded text-primary fw-semi-bold py-1 px-3">if Already have acoount? Login here</p></a>
+                        
+                        <!-- /form -->
+                        {% else %}
+                        <p class="mb-4">Form is not available</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Callback End -->
+
+
+
+{% endblock %}

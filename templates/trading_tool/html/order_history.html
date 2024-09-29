@@ -1,0 +1,194 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<!--  Header End -->
+<div class="container-fluid" style="max-width: initial;">
+  <div class="row">
+    <div class="col-lg-12 col-sm-12 d-flex align-items-stretch">
+        <div class="card w-100">
+          <div class="card-body p-4 mb-4">
+            <div class="mb-4">
+              <h5 class="card-title fw-semibold">Orders History : Executed</h5>
+            </div>
+            <!-- Filter by Status dropdown -->
+            <div class="mb-3">
+                <label for="status-filter" class="form-label">Filter by Status:</label>
+                <select class="form-select" id="status-filter">
+                  <option value="2">Traded / Filled</option>
+                  <option value="6">Pending</option>
+                  <option value="5">Rejected</option>
+                  <option value="3">For future use</option>
+                  <option value="4">Transit</option>
+                  <option value="1">Cancelled</option>
+                  
+                </select>
+            </div>
+            <button id="load-more-btn" class="btn btn-primary mt-3">All Orders</button>
+            <input type="hidden" id="executed" value='2' />
+            <div id="order-history-table" class="table-responsive">
+              <table class="table text-nowrap mb-0 align-middle">
+                {% if order_history_data %}
+                    <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Sl No</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Order Type</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Symbol</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Quantity</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Status</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Price</h6>
+                            </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Order Date & Time</h6>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order_instance in order_history_data %}
+                            <tr>
+                                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ order_instance.slNo }}</h6></td>
+                                <td class="border-bottom-0">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge {% if order_instance.side == 1 %}bg-success{% elif order_instance.side == -1 %}bg-danger{% else %}bg-secondary{% endif %} rounded-2 fw-semibold">
+                                            {% if order_instance.side == 1 %}
+                                                Buy
+                                            {% elif order_instance.side == -1 %}
+                                                Sell
+                                            {% else %}
+                                                Unknown
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-1">{{ order_instance.symbol }}</h6>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge {% if order_instance.side < 0 %}bg-danger{% else %}bg-primary{% endif %} rounded-2 fw-semibold">{{ order_instance.qty }}</span>
+                                    </div>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge {% if order_instance.status == 1 %}bg-secondary{% elif order_instance.status == 2 %}bg-success{% elif order_instance.status == 3 %}bg-info{% elif order_instance.status == 4 %}bg-warning{% elif order_instance.status == 5 %}bg-danger{% elif order_instance.status == 6 %}bg-primary{% endif %} rounded-2 fw-semibold">{{ order_instance.status_description }}</span>
+                                    </div>
+                                </td>
+
+                                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ order_instance.limitPrice }}</h6></td>
+                                <td class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">{{ order_instance.orderDateTime }}</h6>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% else %}
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="text-center">Currently No data Found</td>
+                        </tr>
+                    </tbody>
+                {% endif %}
+              </table>
+            
+              {% comment %} <!-- Pagination links -->
+              <div class="pagination">
+                  <span class="step-links">
+                      {% if order_history_data.has_previous %}
+                          <a href="?page=1">&laquo; first</a>
+                          <a href="?page={{ order_history_data.previous_page_number }}">previous</a>
+                      {% endif %}
+              
+                      <span class="current-page">{{ order_history_data.number }}</span>
+              
+                      {% if order_history_data.has_next %}
+                          <a href="?page={{ order_history_data.next_page_number }}">next</a>
+                          <a href="?page={{ order_history_data.paginator.num_pages }}">last &raquo;</a>
+                      {% endif %}
+                  </span>
+              </div> {% endcomment %}
+
+            <!-- Your existing table content -->
+
+            <!-- Load More Button -->
+            
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+
+
+    var selectedStatus = $('#executed').val();
+    $.ajax({
+      type: 'GET',
+      url: '{% url "order_history" %}',
+      data: {
+        status: selectedStatus
+      },
+      success: function(data) {
+        $('#order-history-table').html(data);
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
+    $('#status-filter').change(function() {
+      var selectedStatus = $(this).val();
+      $.ajax({
+        type: 'GET',
+        url: '{% url "order_history" %}',
+        data: {
+          status: selectedStatus
+        },
+        success: function(data) {
+          $('#order-history-table').html(data);
+        }
+      });
+    });
+
+
+
+    function loadMoreData() {
+        var selectedStatus = $('#status-filter').val();
+        $.ajax({
+          type: 'GET',
+          url: '{% url "order_history" %}',
+          data: {
+            load_more: true // Add load_more parameter with value true
+          },
+          success: function(data) {
+            $('#order-history-table').html(data);
+          }
+        });
+      }
+  
+      // Event listener for the "Load More" button click
+      $('#load-more-btn').click(function() {
+        loadMoreData(); // Call the loadMoreData function
+      });
+  });
+</script>
+{% endblock %}

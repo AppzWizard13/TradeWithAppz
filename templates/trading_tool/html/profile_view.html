@@ -1,0 +1,158 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<!--  Header End -->
+<style>
+    .custom-container {
+        font-family: Poppins;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-container .card {
+        width: 1800px; /* Increase width for a slightly bigger card */
+        border-radius: 20px;
+        background: #191A1D;
+        overflow: hidden;
+        margin: auto; /* Center the card horizontally */
+    }
+
+    .custom-container .card header {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 20px 20px;
+        height: 260px;
+        background: linear-gradient(to left, #0009, #0009), url("https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
+        background-size: cover;
+    }
+
+    .custom-container .card header span.mdi {
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .custom-container .card main {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 150px;
+    }
+
+    .custom-container .card main img {
+        height: 120px; /* Increase image size */
+        width: 120px; /* Increase image size */
+        margin-top: -80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 14px;
+    }
+
+    .custom-container .card main h2 {
+        font-size: 24px; /* Increase heading size */
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 6px;
+    }
+
+    .custom-container .card main p {
+        font-size: 16px; /* Increase text size */
+        color: rgba(255, 255, 255, 0.555);
+        margin-bottom: 10px; /* Add some bottom margin */
+    }
+
+    .custom-container .card main .actions {
+        display: flex;
+    }
+
+    .custom-container .card main .actions button {
+        font-family: inherit;
+        border-radius: 40px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .custom-container .card main .actions button.main {
+        width: 150px; /* Increase button width */
+        height: 40px; /* Increase button height */
+        background: #5458F7;
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px; /* Increase button text size */
+        margin-right: 10px;
+    }
+
+    .custom-container .card main .actions button.secondary {
+        width: 60px; /* Increase button width */
+        height: 40px; /* Increase button height */
+        background: #9597A1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-container .card main .actions button:hover {
+        filter: brightness(1.1);
+    }
+</style>
+<div class="container-fluid" style="max-width: initial;">
+  <div class="row">
+            <!--  Row 1 -->
+            <div class="row">
+              <div class="col-lg-12 d-flex align-items-strech">
+                <div class="card w-100">
+                  <div class="card-body">
+                    <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                      <div class="mb-3 mb-sm-0">
+                        <h5 class="card-title fw-semibold">Account Details</h5>
+                      </div>
+                    </div>
+                    <div class="custom-container">
+                      <div class="card">
+                          <header>
+                              <span class="mdi mdi-arrow-left mdi-24px"></span>
+                              <span class="mdi mdi-dots-horizontal mdi-24px"></span>
+                          </header>
+                          
+                              {% comment %} <img src="{{ data.image }}" alt="">
+                              <h2>{{ data.name }}</h2>
+                              <p class="card-text m-2">EMAIL ID: {{ data.email_id }}</p>
+                              <p class="card-text m-2">FYERS ID: {{ data.fy_id }}</p>
+                              <div class="actions">
+                                  <a href="{% url 'logout' %}"><button class="main">Logout</button></a>
+                              </div> {% endcomment %}
+                          
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="text-center">
+                                        <main>
+                                        <img src="{{ data.image }}" alt="">
+                                        <h2>{{ data.name }}</h2>
+                                        <p class="card-text m-2">EMAIL: {{ data.email_id }}</p>
+                                        <p class="card-text m-2">FYERS: {{ data.fy_id }}</p>
+                                        <div class="actions">
+                                            <a href="{% url 'logout' %}">
+                                                <button class="main">Logout</button>
+                                            </a>
+                                        </div>
+                                        </main>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                      </div>
+                  </div>
+
+                  
+                  </div>
+                </div>
+              </div>
+</div>
+</div>
+
+
+{% endblock %}

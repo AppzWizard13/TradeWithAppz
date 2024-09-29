@@ -1,0 +1,56 @@
+{% extends 'myblog/index.html' %}
+{% load static %}
+{% block content %}
+
+
+	<!--================ Start Features Area =================-->
+	<section class="features_area section_gap_top">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="main_title">
+                        <h2>service offers </h2>
+                        <p class="font-weight-bold" >
+                        Behold a collection of my modest yet captivating creations, showcasing a glimpse of the artistry and creativity that adorn my personal website.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row feature_inner">
+                <div class="col-lg-3 col-md-6">
+                    <a href="{% url 'image_resizer' %}">
+                    <div class="feature_item" >
+                        <img src="{% static 'myblog/img/services/s1.png' %}" alt="">
+                        <h4>Image resizer</h4>
+                        <p>Creeping for female light years that lesser can't evening heaven isn't bearing tree</p>
+                    </div>
+                    </a>
+                </div>
+                    <div class="col-lg-3 col-md-6">
+                        <a href="{% url 'login' %}">
+                        <div class="feature_item" >
+                            <img src="{% static 'myblog/img/services/s2.png' %}" alt="">
+                            <h4>Expense tracker</h4>
+                            <p>Creeping for female light years that lesser can't evening heaven isn't bearing tree</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature_item" >
+                        <img src="{% static 'myblog/img/services/s3.png' %}" alt="">
+                        <h4>Web design</h4>
+                        <p>Creeping for female light years that lesser can't evening heaven isn't bearing tree</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature_item" >
+                        <img src="{% static 'myblog/img/services/s4.png' %}" alt="">
+                        <h4>seo optimize</h4>
+                        <p>Creeping for female light years that lesser can't evening heaven isn't bearing tree</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================ End Features Area =================-->
+{% endblock %}

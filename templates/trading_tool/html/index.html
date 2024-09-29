@@ -1,0 +1,875 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tradewithappz</title>
+  <link rel="shortcut icon" type="image/png" href="{% url 'home' %}" />
+  <link rel="stylesheet" href="{% static 'trading_tool/assets/css/styles.min.css' %}" />
+</head>
+<body>
+  {% comment %} {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+          <li style="background-color: #dff0d8; color: #3c763d; border-color: #d6e9c6; padding: 10px; margin-bottom: 10px;">{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %} {% endcomment %}
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="{% url 'home' %}" class="text-nowrap logo-img">
+            <img src="{% static 'appzlogo/midlogo.png' %}" width="180" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Home</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{% url 'dashboard' %}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">OPTION CHAIN</span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'options_chain_view' slug='MIDCPNIFTY' %}" aria-expanded="false">
+                    <span><i class="ti ti-article"></i></span>
+                    <span class="hide-menu">MIDCAPNIFTY</span>
+                </a>
+            </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link"  href="{% url 'options_chain_view' slug='FINNIFTY' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-alert-circle"></i>
+                  </span>
+                  <span class="hide-menu">FINNIFTY</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'options_chain_view' slug='NIFTYBANK' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-cards"></i>
+                  </span>
+                  <span class="hide-menu">BANK NIFTY</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'options_chain_view' slug='NIFTY50' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-file-description"></i>
+                  </span>
+                  <span class="hide-menu">NIFTY</span>
+                </a>
+              </li>
+               <li class="sidebar-item" disabled>
+                <a class="sidebar-link" href="{% url 'options_chain_view' slug='SENSEX' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-file-description"></i>
+                  </span>
+                  <span class="hide-menu">SENSEX</span>
+                </a>
+              </li> 
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">REPORT</span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'order_history' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-login"></i>
+                  </span>
+                  <span class="hide-menu">Order History</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'transaction_history' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-login"></i>
+                  </span>
+                  <span class="hide-menu">Transaction History</span>
+                </a>
+              </li>
+
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">ANALYSE</span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'trading_calender_view' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-user-plus"></i>
+                  </span>
+                  <span class="hide-menu">Trading Journel</span>
+                </a>
+              </li>
+              {% comment %} <li class="sidebar-item">
+                <a class="sidebar-link"href="{% url 'candle_overview' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-aperture"></i>
+                  </span>
+                  <span class="hide-menu">Candle Overview</span>
+                </a>
+              </li> {% endcomment %}
+
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">REPORTING</span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{% url 'sod_config_process' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-mood-happy"></i>
+                  </span>
+                  <span class="hide-menu">SOD - REPORTING</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link"href="{% url 'eod_reporting_view' %}" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-aperture"></i>
+                  </span>
+                  <span class="hide-menu">EOD - REPORTING</span>
+                </a>
+              </li>
+            </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header pt-4">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none" >
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0 " id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end" style="width: -webkit-fill-available;">
+              <style>
+                .custom-primary {
+                  background-color: #2d88e9; /* Blue */
+                  color: #ffffff; /* white  text */
+                }
+              
+                .custom-danger {
+                  background-color: #dd2000; /* Red */
+                  color: #ffffff; /* white  text */
+                }
+              
+                .custom-success {
+                  background-color: #0eb51f; /* Green */
+                  color: #ffffff; /* white  text */
+                }
+              
+                .custom-warning {
+                  background-color: #ffd861; /* Yellow */
+                  color: #000000; /* Black text */
+                }
+              
+                .custom-info {
+                  background-color: #17a2b8; /* Teal */
+                  color: #ffffff; /* white  text */
+                }
+                .custom-light {
+                  background-color: #afbfb1; /* Teal */
+                  color: #000000; /* white  text */
+                }
+              </style>
+                        
+            {% comment %} ======================================================================================================= {% endcomment %}
+            {% if options_data.data.optionsChain %}
+            <div class="container mt-1">
+              <div class="row justify-content-center">
+                <div class="col-12 my-1">
+                  <div class="row">
+                    <div class="col-12 col-md-3 ">
+                      <div class="alert custom-primary text-center m-1" role="alert">
+                        <p id="openPlData" class="mb-0 fs-5 fw-bolder">P/L DATA</p>
+                        <input type="hidden" name="open-symbol" value="">
+                        <input type="hidden" name="open-qty" value="">
+                        <input type="hidden" name="open-traded-price" value="">
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-3 ">
+                      <div class="alert custom-primary text-center m-1" role="alert">
+                        <p id="openOrderData" class="mb-0 fs-5 fw-bolder">POSITIONS</p>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-3 ">
+                      <div class="alert custom-primary text-center m-1" role="alert">
+                        <p id="expLossAmount" class="mb-0 fs-5 fw-bolder">STOPLOSS</p>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-3 ">
+                      <div class="alert custom-primary text-center m-1" role="alert">
+                        <p id="openAmountData" class="mb-0 fs-5 fw-bolder">DEPLOYED</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            
+            
+            {% for item in fund_data.fund_limit %}
+            {% if item.id == 10 %}
+                <a href="#" class="btn btn-primary fw-semibold lh-sm my-4 mx-2">Account Balance : {{ item.equityAmount|floatformat:2 }}</a>
+                <!-- <a href="#" class="btn btn-success fw-semibold lh-sm my-4 mx-2">DHAN Balance:{{ dhan_fund|floatformat:2 }}</a> -->
+                <!-- <button id="updatebrokerdata" target="_blank" class="btn btn-primary fw-semibold lh-sm my-4 mx-2">Loading...</button> -->
+            {% endif %}
+            {% endfor %}
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="{% static 'trading_tool/assets/images/profile/user-1.jpg' %}" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="{% url "get_user_profile" %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Account</p>
+                    </a>
+                    {% comment %} <a href="{% url 'broker_config' %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-list-check fs-6"></i>
+                      <p class="mb-0 fs-3">Broker Configurations</p>
+                    </a> {% endcomment %}
+                    <a href="{% url 'configure_trading' %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-list-check fs-6"></i>
+                      <p class="mb-0 fs-3">Trade Configurations</p>
+                    </a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      {% block content %}
+      <!--  Header End -->
+      <div class="container-fluid ">
+        <div class="row pt-5">
+          <div class="col-sm-6 col-xl-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold">Today Earnings</h5>
+                    <h4 class="fw-semibold mb-3" style="color: {% if positions_data.overall.pl_realized >= 0 %}#03C03C{% else %}red{% endif %}">
+                      <p class="fs-2 mb-0" id="pl-realized" >INR</p> {{ positions_data.overall.pl_realized|floatformat:2 }}</p>
+                    </h4>
+                    <div class="d-flex align-items-center pb-1">
+                     <span
+                        class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-arrow-up-right text-success"></i>
+                      </span>
+                      {% comment %} <a href="{% url "sod_config_process" %}" class="btn btn-success mx-2">SOD Process</a> {% endcomment %}
+                      <button id="sodProcessBtn" class="btn btn-success mx-2">SOD Process</button>
+
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                        class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                   
+                    <h5 class="card-title mb-9 fw-semibold">Smart Exit</h5>
+                    <h4 class="fw-semibold mb-3" style="color: {% if positions_data.overall.pl_unrealized >= 0 %}#03C03C{% else %}red{% endif %}">
+                      <p class="fs-2 mb-0" id="pl-unrealized" >INR</p> {{ positions_data.overall.pl_unrealized|floatformat:2 }}
+                    </h4>
+                    <div class="d-flex align-items-center pb-1">
+                      <span
+                        class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-arrow-up-right text-success"></i>
+                      </span>
+                      <a href="#" id="close_positions_button" class="btn btn-danger">Close all</a>
+
+                    </div>
+                  
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                        class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold">Order Count </h5>
+                    <h4 class="fw-semibold mb-3">{{total_order_status}}</h4>
+                    <div class="d-flex align-items-center pb-1">
+                      <span
+                        class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-arrow-down-right text-danger"></i>
+                      </span>
+                      <p class="fs-3 mb-0">Brokerage:{{expected_brokerage}}</p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                        class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="row alig n-items-start">
+                  <div class="col-8">
+                    <h5 class="card-title mb-9 fw-semibold">Orders Limit</h5>
+                    <h4 id="total_order_status" class="fw-semibold">{{order_limit}}</h4>
+                    <div class=" align-items-center">
+                      <div class="progress" style="height: 32px;">
+                       
+                        <div class="progress-bar {% if progress_percentage < 50 %}bg-danger{% elif progress_percentage <= 80 %}bg-warning{% else %}bg-success{% endif %}" role="progressbar" style="width: {{ progress_percentage }}%;" aria-valuenow="{{ total_order_status }}" aria-valuemin="0" aria-valuemax="{{ order_limit }}">
+                            <span class="text-dark">{{ progress_percentage|floatformat:2 }}%</span>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="d-flex justify-content-end">
+                      <div
+                        class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                        <i class="ti ti-currency-dollar fs-6"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        <!--  Row 1 -->
+        <div class="row">
+          <div class="col-lg-12 d-flex align-items-strech">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                  <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">Portfolio Overview</h5>
+                  </div>
+                  <div>
+                    <select class="form-select" disabled>
+                      <option value="1">March 2023</option>
+                      <option value="2">April 2023</option>
+                      <option value="3">May 2023</option>
+                      <option value="4">June 2023</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="chart">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-lg-6 col-sm-12  d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body p-4">
+                <h5 class="card-title fw-semibold mb-4">Positions</h5>
+              <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    {% if positions_data.netPositions  %}
+                      <thead class="text-dark fs-4">
+                          <tr>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">No</h6>
+                              </th>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Symbol</h6>
+                              </th>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Realized Profit</h6>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      {% endif %} 
+                      {% if positions_data.netPositions  %}
+                        {% for position in positions_data.netPositions %}
+                        <tr>
+                          <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ forloop.counter }}</h6></td>
+                          <td class="border-bottom-0">
+                              <h6 class="fw-semibold mb-1">{{ position.symbol }}</h6>
+                              <span class="fw-normal"> {{ position.productType }}  </span>                          
+                          </td>
+
+                          <td class="border-bottom-0">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge {% if position.realized_profit < 0 %}bg-danger{% else %}bg-primary{% endif %} rounded-3 fw-semibold">{{ position.realized_profit|floatformat:2 }}</span>
+                            </div>
+                        </td>
+                        </tr> 
+                      {% endfor %}
+                      {% else  %}
+                      <div class="timeline-desc fs-3 text-dark mt-n1">Currently No data Found</div>
+                      {% endif %} 
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> 
+          <div class="col-lg-6 col-sm-12 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body p-4 mb-4">
+                <div class="mb-4">
+                  <h5 class="card-title fw-semibold">Recent Orders</h5>
+                </div>
+                <div class="table-responsive">
+                  <table class="table text-nowrap mb-0 align-middle">
+                    {% if recent_order_data  %}
+                      <thead class="text-dark fs-4">
+                          <tr>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">sl No</h6>
+                              </th>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Symbol</h6>
+                              </th>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Quantity</h6>
+                              </th>
+                              <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Price</h6>
+                              </th>
+                              <!-- <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0">Budget</h6>
+                              </th> -->
+                          </tr>
+                      </thead>
+                      <tbody>
+                    {% endif %}
+                    {% comment %} ========================================================= {% endcomment %}
+                    {% if recent_order_data  %}
+                    {% for order_instnace in recent_order_data %}
+                    <tr>
+                      <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ order_instnace.slNo}}</h6></td>
+                      <td class="border-bottom-0">
+                          <h6 class="fw-semibold mb-1">{{ order_instnace.symbol }}</h6>
+                          <span class="fw-normal"> {{ order_instnace.qty }}  </span>                          
+                      </td>
+                      <td class="border-bottom-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge {% if order_instnace.side < 0 %}bg-danger{% else %}bg-primary{% endif %} rounded-3 fw-semibold">{{  order_instnace.qty }}</span>
+                        </div>
+                    </td>
+                    <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ order_instnace.limitPrice}}</h6></td>
+                    </tr> 
+                  </li>
+                  {% endfor %}
+                  {% else  %}
+                  <div class="timeline-desc fs-3 text-dark mt-n1">Currently No data Found</div>
+                  {% endif %} 
+                    </tbody>
+                  </table>
+                </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="py-6 px-6 text-center">
+          <p class="mb-0 fs-4">Design and Developed by <a href="https://appztechblog.com/" target="_blank" class="pe-1 text-primary text-decoration-underline">Appztechblog.com</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .container-fluid {
+        max-width: none !important;
+    }
+    body.dark-mode {
+      background-color: #000000;
+      color: #ffffff;
+    }
+    body {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('#sodProcessBtn').click(function(e) {
+            e.preventDefault();
+    
+            $.ajax({
+                type: 'GET',
+                url: '{% url "sod_config_process" %}',
+                success: function(response) {
+                    // Handle success response
+                    swal({
+                        position: "top-end",
+                        icon: "success",
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 4000
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Failed to perform SOD Process. Error:', error);
+                    swal({
+                        position: "top-end",
+                        icon: "error",
+                        title: "Failed to perform SOD Process",
+                        showConfirmButton: false,
+                        timer: 4000
+                    });
+                }
+            });
+        });
+    });
+  </script>
+    
+  <script>
+    $(document).ready(function() {
+      // Define a function to fetch data from the server
+      function fetchData() {
+          // Get the current date and time
+          var now = new Date();
+          var hours = now.getHours();
+          var minutes = now.getMinutes();
+          
+          // Check if the current time is within the allowed range (9:15 AM to 3:30 PM)
+          if ((hours > 9 || (hours == 9 && minutes >= 15)) && (hours < 15 || (hours == 15 && minutes <= 30))) {
+              $.ajax({
+                  url: '{% url "update_data_instance" %}',
+                  type: 'GET',
+                  success: function(response) {
+                    // Handle the response data here
+                    console.log('Data received:', response);
+
+                    // Update total_order_status and order_limit
+                    var totalOrderStatus = response.total_order_status;
+                    console.log('totalOrderStatus', totalOrderStatus);
+                    var orderLimit = {{ order_limit }};
+
+                    // Calculate remaining orders
+                    var remainingOrders = orderLimit - totalOrderStatus;
+
+                    // Update the total order status in the h4 element
+                    $('#total_order_status').text(totalOrderStatus + '/' + orderLimit);
+
+                    // Calculate progress percentage
+                    var progressPercentage = (remainingOrders / orderLimit) * 100;
+                    progressPercentage = progressPercentage.toFixed(1);
+
+                    // Update the progress bar
+                    $('.progress-bar').css('width', progressPercentage + '%');
+                    $('.progress-bar').attr('aria-valuenow', remainingOrders);
+                    $('.progress-bar .text-dark').text(progressPercentage + '%');
+
+                    // Determine the color of the progress bar
+                    if (progressPercentage > 50) {
+                        $('.progress-bar').addClass('bg-success').removeClass('bg-warning bg-danger');
+                    } else if (progressPercentage <= 50 && progressPercentage > 20) {
+                        $('.progress-bar').addClass('bg-warning').removeClass('bg-success bg-danger');
+                    } else {
+                        $('.progress-bar').addClass('bg-danger').removeClass('bg-success bg-warning');
+                    }
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('Error fetching data:', error);
+                  }
+              });
+          }
+      }
+        // Call the fetchData function initially when the page is loaded
+        fetchData();
+        // Set an interval to call the fetchData function every 5 minutes
+        setInterval(fetchData, 300*1000);
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#close_positions_button').click(function(e) {
+          e.preventDefault();
+          console.log('Position closed successfully.');
+
+          $.ajax({
+              type: 'GET',  // Adjust the request type as needed
+              url: '{% url "close_all_positions" %}',
+              success: function(response) {
+                  // Handle success response if needed
+                  console.log('Position closed successfully.', response.message);
+                  swal({
+                    position: "top-end",
+                    icon: "success",
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 500
+                  })
+                 
+              },
+              error: function(xhr, status, error) {
+                  // Handle error response if needed
+                  console.error('Failed to close position. Error:', error);
+                  swal({
+                    position: "top-end",
+                    icon: "error",
+                    title: "some error occured!",
+                    showConfirmButton: false,
+                    timer: 500
+                  })
+                 
+              }
+          });
+      });
+    });
+
+  </script>
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        type: 'GET',  // Adjust the request type as needed
+        url: '{% url "get_broker_state" %}',  // URL for fetching the initial state
+        success: function(response) {
+            // Set the initial state of the button based on the response
+            if (response.active_broker === 'DHAN') {
+                $('#updatebrokerdata').addClass('btn-info').removeClass('btn-info');
+                document.getElementById('updatebrokerdata').innerHTML = "DHAN";
+            } else {
+                $('#updatebrokerdata').addClass('btn-info').removeClass('btn-info');
+                document.getElementById('updatebrokerdata').innerHTML = "FYERS";
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle error response if needed
+            console.error('Failed to fetch broker state. Error:', error);
+            swal({
+                position: "top-end",
+                icon: "error",
+                title: "Failed to fetch broker state!",
+                showConfirmButton: false,
+                timer: 500
+            });
+        }
+    });
+    $('#updatebrokerdata').click(function(e) {
+      e.preventDefault();
+  
+      $.ajax({
+          type: 'GET',
+          url: '{% url "switch_broker" %}',
+          success: function(response) {
+              if (response.active_broker === 'DHAN') {
+                  $('#updatebrokerdata').addClass('btn-info').removeClass('btn-info');
+                  document.getElementById('updatebrokerdata').innerHTML = "DHAN";
+              } else {
+                  $('#updatebrokerdata').addClass('btn-info').removeClass('btn-info');
+                  document.getElementById('updatebrokerdata').innerHTML = "FYERS";
+              }
+              swal({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Active broker switched to " + response.active_broker,
+                  showConfirmButton: false,
+                  timer: 500
+              });
+          },
+          error: function(xhr, status, error) {
+              console.error('Failed to switch broker. Error:', error);
+              swal({
+                  position: "top-end",
+                  icon: "error",
+                  title: "Some error occurred!",
+                  showConfirmButton: false,
+                  timer: 500
+              });
+            }
+        });
+    });
+  
+    });
+  </script>
+  <script src="{% static 'trading_tool/assets/js/dashboard.js' %}"></script>
+  {% endblock %}
+
+  <script>
+    $(document).ready(function() {
+    $('#trailingtodown').click(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'GET',  // Adjust the request type as needed
+            url: '{% url "trailingtodown" %}',
+            success: function(response) {
+                // Handle success response if needed
+                swal({
+                  position: "top-end",
+                  icon: "success",
+                  title: response.message,
+                  showConfirmButton: false,
+                  timer: 500
+                })
+               
+            },
+            error: function(xhr, status, error) {
+                // Handle error response if needed
+                console.error('Failed to close position. Error:', error);
+                swal({
+                  position: "top-end",
+                  icon: "error",
+                  title: "some error occured!",
+                  showConfirmButton: false,
+                  timer: 500
+                })
+               
+            }
+        });
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+    $('#trailingtotop').click(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'GET',  // Adjust the request type as needed
+            url: '{% url "trailingtotop" %}',
+            success: function(response) {
+                // Handle success response if needed
+                swal({
+                  position: "top-end",
+                  icon: "success",
+                  title: response.message,
+                  showConfirmButton: false,
+                  timer: 500
+                })
+               
+            },
+            error: function(xhr, status, error) {
+                // Handle error response if needed
+                console.error('Failed to close position. Error:', error);
+                swal({
+                  position: "top-end",
+                  icon: "error",
+                  title: "some error occured!",
+                  showConfirmButton: false,
+                  timer: 500
+                })
+               
+            }
+        });
+      });
+    });
+</script>
+<script src="{% static 'trading_tool/assets/libs/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'trading_tool/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'trading_tool/assets/js/sidebarmenu.js' %}"></script>
+<script src="{% static 'trading_tool/assets/js/app.min.js' %}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'trading_tool/assets/libs/simplebar/dist/simplebar.js' %}"></script>
+<script>
+  var positions_data = {{ positions_data|default:"{}" | safe }};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'trading_tool/assets/libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+
+
+
+
+
+
+
+
+{% comment %} <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+      document.documentElement.setAttribute('data-theme', currentTheme);
+
+      if (currentTheme === 'dark') {
+        toggleSwitch.checked = true;
+      }
+    }
+
+    function switchTheme(e) {
+      if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    toggleSwitch.addEventListener('change', switchTheme, false);
+  });     
+</script> {% endcomment %}
+
+
+
+</body>
+</html>
+

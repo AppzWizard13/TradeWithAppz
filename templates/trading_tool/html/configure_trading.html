@@ -1,0 +1,102 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<!-- Header End -->
+<div class="container-fluid" style="max-width: initial;">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Trading Configuration</h5>
+                <div class="alert alert-danger" role="alert" style="--bs-alert-padding-x: 10px;--bs-alert-padding-y: 10px;">
+                    <p class="card-text fs-2 fw-bolder mt-4 text-danger">Please do Deposit Before SO, Update in The SOD form</p>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form id="trade-config-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button id="submit-btn" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-4">Latest Configurations</h5>
+                        <div class="list-group">
+                            {% for config in latest_configurations %}
+                                <div class="list-group-item">
+                                    <h5 class="mb-3">Configuration ID: {{ config.id }}</h5>
+                                    <p><strong>Last Updated:</strong> {{ config.last_updated }}</p>
+                                    <p><strong>Default Stoploss:</strong> {{ config.default_stoploss }}</p>
+                                    <p><strong>Default Order Quantity:</strong> {{ config.default_order_qty }}</p>
+                                    <p><strong>Reward Ratio:</strong> {{ config.reward_ratio }}</p>
+                                    <p><strong>Max Loss:</strong> {{ config.max_loss }}</p>
+                                    <p><strong>Max Trade Count:</strong> {{ config.max_trade_count }}</p>
+                                    <p><strong>Capital Limit Per Order:</strong> {{ config.capital_limit_per_order }}</p>
+                                    <p><strong>Capital Usage Limit:</strong> {{ config.capital_usage_limit }}</p>
+                                    <p><strong>Forward Trailing Points:</strong> {{ config.forward_trailing_points }}</p>
+                                    <p><strong>Trailing to Top Points:</strong> {{ config.trailing_to_top_points }}</p>
+                                    <p><strong>Reverse Trailing Points:</strong> {{ config.reverse_trailing_points }}</p>
+                                    <p><strong>Stoploss Limit Slippage:</strong> {{ config.stoploss_limit_slippage }}</p>
+                                    <p><strong>Averaging Limit:</strong> {{ config.averaging_limit }}</p>
+                                    <p><strong>Order Quantity Mode:</strong> {{ config.get_order_quantity_mode_display }}</p>
+                                    <p><strong>Scalping Amount Limit:</strong> {{ config.scalping_amount_limit }}</p>
+                                    <p><strong>Scalping Mode:</strong> {{ config.scalping_mode }}</p>
+                                    <p><strong>Scalping Stoploss:</strong> {{ config.scalping_stoploss }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#trade-config-form').submit(function(event) {
+      event.preventDefault(); // Prevent the default form submission
+  
+      var form = $(this);
+      $.ajax({
+        url: form.attr('action'),
+        type: form.attr('method'),
+        data: form.serialize(),
+        success: function(response) {
+          if (response.success) {
+            // Show success message (optional: redirect to another page)
+            swal({
+              position: "top-end",
+              icon: "success",
+              title: 'Configuration Saved Successfully',
+              showConfirmButton: false,
+            });
+          } 
+          else if (response.error) {
+            // Show success message (optional: redirect to another page)
+            swal({
+              position: "top-end",
+              icon: "info",
+              title: 'Cannot modify Configuration for today',
+              showConfirmButton: false,
+            });
+          } 
+        },
+        error: function(xhr, status, error) {
+          // Handle other errors (e.g., server error)
+            // Display form validation errors
+            var jsonObject = JSON.parse(error);
+            console.log("pppppppppppp", typeof(jsonObject));
+            swal({
+              position: "top-end",
+              icon: "error",
+              title: errorMessage,
+              showConfirmButton: false,
+            });
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

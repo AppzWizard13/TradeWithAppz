@@ -1,0 +1,74 @@
+{% extends 'trading_tool/html/index.html' %}
+{% load static %}
+{% block content %}
+<!--  Header End -->
+<div class="container-fluid" style="max-width: initial;">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">SOD Reporting</h5>
+        <div class="alert alert-danger" role="alert"  style="--bs-alert-padding-x: 10px;--bs-alert-padding-y: 10px;">
+        <p class="card-text fs-2 fw-bolder text-danger">Please do Deposit Before SO, Update in The SOD form</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <form id="sod-eod-form" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button  id="submit-btn" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#sod-eod-form').submit(function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var form = $(this);
+    $.ajax({
+      url: form.attr('action'),
+      type: form.attr('method'),
+      data: form.serialize(),
+      success: function(response) {
+        console.log('responseresponse', response)
+        if (response.error) {
+          // Display error message
+          swal({
+            position: "top-end",
+            icon: "error",
+            title: response,
+            showConfirmButton: false,
+            timer: 500,
+            });  
+        } else {
+          // Optionally, redirect to another page
+          swal({
+            position: "top-end",
+            icon: "success",
+            title: "SOD entry added successfully for Today",
+            showConfirmButton: false,
+            });  
+        }
+      },
+      error: function(xhr, status, error) {
+        console.log('errorerrorerror', error)
+        // Display form validation errors
+        swal({
+          position: "top-end",
+          icon: "error",
+          title: "SOD Entry Already Exists for Today",
+          showConfirmButton: false
+          
+          }); 
+      }
+    });
+  });
+});
+</script>
+{% endblock %}
+
