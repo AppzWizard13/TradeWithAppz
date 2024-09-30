@@ -121,7 +121,8 @@ class FyersIndexDataConsumer(WebsocketConsumer):
         if response.status_code == 200:
             json_response = response.json()
             self.access_token = json_response.get("access_token")
-            self.getoptionsymbols = self.getOptionStrikes()
+            self.getoptionsymbols, self.optioncancelsymbols = self.getOptionStrikes()
+
             self.fyers = data_ws.FyersDataSocket(
                 access_token=self.access_token,
                 log_path="",
@@ -140,7 +141,11 @@ class FyersIndexDataConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         data_type = "SymbolUpdate"
-        self.fyers.unsubscribe(symbols=self.allsymbols, data_type=data_type)
+        self.closing_symbols = self.optioncancelsymbols + self.symbols
+        print('---------------------------------------------------')
+        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', self.closing_symbols)
+        print('---------------------------------------------------')
+        self.fyers.unsubscribe(symbols=self.closing_symbols, data_type=data_type)
         self.close()
 
     def on_open(self):
@@ -206,6 +211,9 @@ class FyersIndexDataConsumer(WebsocketConsumer):
 
     def on_close(self, message):
         data_type = "SymbolUpdate"
+        print('-----------------------------------------')
+        print('oooooooooooooooooooooooo', self.allsymbols)
+        print('-----------------------------------------')
         self.fyers.unsubscribe(symbols=self.allsymbols, data_type=data_type)
         self.close()
         self.send(text_data=f"Connection closed: {message}")
@@ -215,7 +223,7 @@ class FyersIndexDataConsumer(WebsocketConsumer):
         concatenated_string = f"{client_id}:{secret_key}"
         hash_object = hashlib.sha256(concatenated_string.encode())
         return hash_object.hexdigest()
-    
+        
     def getOptionStrikes(self):
         self.fyers = fyersModel.FyersModel(client_id=self.app_id, is_async=False, token=self.access_token, log_path="")
         
@@ -231,20 +239,18 @@ class FyersIndexDataConsumer(WebsocketConsumer):
             if first_expiry_ts:
                 # Extract the 'checking_key' by slicing 'NSE:MIDCPNIFTY' from 'self.symbols[0]'
                 self.checking_key = self.symbols[0].split('-')[0]
-                print('self.checking_keyself.checking_key', self.checking_key)
+                print('self.checking_key', self.checking_key)
                 if self.checking_key == "NSE:NIFTYBANK":
                     self.checking_key = "NSE:BANKNIFTY"
                 elif self.checking_key == "NSE:NIFTY50":
                     self.checking_key = "NSE:NIFTY"
-
-                    
                 
+                # Original 4-strike logic for symbol_list
                 options_data = {
                     "symbol": self.symbols[0],
-                    "strikecount": 4,
+                    "strikecount": 4, 
                     "timestamp": first_expiry_ts
                 }
-
                 print('self.symbols[0]:', self.symbols[0])
                 
                 response = self.fyers.optionchain(data=options_data)
@@ -262,19 +268,49 @@ class FyersIndexDataConsumer(WebsocketConsumer):
                     [option for option in options_chain if option['option_type'] == 'CE'],
                     key=lambda x: x['strike_price']
                 )
-                print('pe_options_sortedpe_options_sorted', pe_options_sorted)
+                print('pe_options_sorted', pe_options_sorted)
 
+                # Symbols for original 4 strikes
                 self.pe_symbols = [option['symbol'] for option in pe_options_sorted]
                 self.ce_symbols = [option['symbol'] for option in ce_options_sorted]
                 
                 symbol_list = self.ce_symbols + self.pe_symbols
-                return symbol_list
+
+                # API call for 30 strikes to populate symbols_close_list
+                close_data = {
+                    "symbol": self.symbols[0],
+                    "strikecount": 30,  # Separate API call for 30 strikes
+                    "timestamp": first_expiry_ts
+                }
+
+                close_response = self.fyers.optionchain(data=close_data)
+                close_options_chain = close_response['data']['optionsChain']
+
+                # Filter and sort PE and CE options for close list
+                pe_close_sorted = sorted(
+                    [option for option in close_options_chain if option['option_type'] == 'PE'],
+                    key=lambda x: x['strike_price'],
+                    reverse=True
+                )
+                ce_close_sorted = sorted(
+                    [option for option in close_options_chain if option['option_type'] == 'CE'],
+                    key=lambda x: x['strike_price']
+                )
+                
+                # Symbols for the 30 strikes
+                pe_symbols_close = [option['symbol'] for option in pe_close_sorted]
+                ce_symbols_close = [option['symbol'] for option in ce_close_sorted]
+
+                symbols_close_list = ce_symbols_close + pe_symbols_close
+                
+                return symbol_list, symbols_close_list
 
         except (KeyError, AttributeError, IndexError, Exception) as e:
             error_message = f'Error occurred: {str(e)}'
             print("Error occurred while fetching option data:", error_message)
             
-        return []
+        return [], []  # Return empty lists if there's an error
+
 
     def receive(self, text_data):
         message = json.loads(text_data)
